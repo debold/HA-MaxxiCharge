@@ -1,0 +1,150 @@
+# Maxxicharge v2
+- method: GET
+  resource: https://maxxisun.app:3000/api/last
+  verify_ssl: false
+  headers:
+    Authorization: "Bearer {{ states('sensor.MaxxiCharge_Auth_JWT') }}"
+    Accept: application/json, text/plain, */*
+    User-Agent: Home Assistant
+  scan_interval: 10
+  timeout: 30
+  sensor:
+    # Device ID / Name - does not change
+    - name: MaxxiChargeV2_DeviceId
+      unique_id: MaxxiChargeV2_DeviceId
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.deviceId }}
+    # Battery state of charge in %
+    - name: MaxxiChargeV2_Soc
+      unique_id: MaxxiChargeV2_Soc
+      device_class: battery
+      state_class: measurement
+      icon: >
+        mdi:battery-{{ (value_json.SOC | int(0) / 10) | round(0, 0, 0) * 10 }}
+      value_template: >
+        {{ value_json.SOC }}
+      unit_of_measurement: '%'
+    # WIFI signal strength
+    - name: MaxxiChargeV2_WifiStrength
+      unique_id: MaxxiChargeV2_WifiStrength
+      device_class: signal_strength
+      state_class: measurement
+      icon: mdi:wifi
+      value_template: >
+        {{ value_json.wifiStrength }}
+      unit_of_measurement: dBm
+    # Power delivered by MaxxiCharge to the circut
+    - name: MaxxiChargeV2_PowerOut
+      unique_id: MaxxiChargeV2_PowerOut
+      device_class: power
+      state_class: measurement
+      icon: mdi:power-plug-battery-outline
+      value_template: >
+        {{ value_json.Pccu | round(0, 0, 0)}}
+      unit_of_measurement: W
+    # Power meter reading by MaxxiCharge
+    - name: MaxxiChargeV2_PowerReading
+      unique_id: MaxxiChargeV2_PowerReading
+      device_class: power
+      state_class: measurement
+      icon: mdi:gauge
+      value_template: >
+        {{ value_json.Pr | round(0, 0, 0) }}
+      unit_of_measurement: W
+    # Total solar power delivered to the MaxxiCharge
+    - name: MaxxiChargeV2_PowerSolar
+      unique_id: MaxxiChargeV2_PowerSolar
+      device_class: power
+      state_class: measurement
+      icon: mdi:solar-power-variant
+      value_template: >
+        {{ value_json.PV_power_total }}
+      unit_of_measurement: W
+    # Firmware version of MaxxiCharge
+    - name: MaxxiChargeV2_FirmwareVersion
+      unique_id: MaxxiChargeV2_FirmwareVersion
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.firmwareVersion }}
+    # Time of last data recorded by MaxxiCharge cloud service
+    # Can be used to detect connection issues
+    - name: MaxxiChargeV2_LastUpdate
+      unique_id: MaxxiChargeV2_LastUpdate
+      icon: mdi:calendar
+      value_template: >
+        {{ (value_json.date / 1000) | timestamp_local }}
+    # Battery capacity of 1st battery
+    # You may duplicate and adjust this sensor if you have multiple batteries chained up
+    - name: MaxxiChargeV2_BatteryCapacity
+      unique_id: MaxxiChargeV2_BatteryCapacity
+      device_class: energy_storage
+      state_class: measurement
+      icon: >
+        mdi:battery-{{ (states('sensor.MaxxiChargeV2_Soc') | int(0) / 10) | round(0, 0, 0) * 10 }}
+      value_template: >
+        {{ value_json.batteriesInfo[0].batteryCapacity | round(2, 0, 0) }}
+      unit_of_measurement: Wh
+    # Computed sensors
+    # Solar power used to charge battery
+    - name: MaxxiChargeV2_PowerBattery
+      unique_id: MaxxiChargeV2_PowerBattery
+      value_template: >
+        {{ (value_json.PV_power_total - value_json.Pccu) | round(0, 0, 0) }}
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      icon: mdi:battery-charging-outline
+    # Indicator for battery charging or draining
+    - name: MaxxiChargeV2_BatteryCharging
+      unique_id: MaxxiChargeV2_BatteryCharging
+      value_template: >
+        {% if ((value_json.PV_power_total - value_json.Pccu) | round(0, 0, 0)) > 0 %}
+          Charging
+        {% else %}
+          Discharging
+        {% endif %}
+      icon: >
+        {% if ((value_json.PV_power_total - value_json.Pccu) | round(0, 0, 0)) > 0 %}
+          mdi:battery-arrow-up-outline
+        {% else %}
+          mdi:battery-arrow-down-outline
+        {% endif %}
+    # Calculates the difference in power reading between MaxxiCharge and PowerOpti
+    - name: MaxxiChargeV2_PowerReadingDeviation
+      unique_id: MaxxiChargeV2_PowerReadingDeviation
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      value_template: >
+        {{ (value_json.Pr - state_attr('sensor.poweropti', 'Watt')) | round(0, 0, 0) }}
+      icon: >
+        {% if ((value_json.Pr - state_attr('sensor.poweropti', 'Watt')) | round(0, 0, 0)) > 0 %}
+          mdi:gauge-full
+        {% else %}
+          mdi:gauge-empty
+        {% endif %}
+    # Legacy sensors
+    # Lists all JSON data for MaxxiCharge system context
+    - name: MaxxiCharge_System
+      unique_id: maxxicharge_system
+      value_template: Ok
+      json_attributes:
+        - deviceId
+        - wifiStrength
+        - Pr
+        - PV_power_total
+        - SOC
+        - Pccu
+        - firmwareVersion
+        - date
+      icon: mdi:file-document-outline
+    # Lists all JSON data for MaxxiCharge battery context
+    # You may duplicate and adjust this sensor if you have multiple batteries chained up
+    - name: MaxxiCharge_Battery
+      unique_id: maxxicharge_battery
+      value_template: Ok
+      json_attributes_path: $.batteriesInfo[0]
+      json_attributes:
+        - batteryCapacity
+      icon: mdi:file-document-outline
