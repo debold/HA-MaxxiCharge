@@ -1,0 +1,89 @@
+# Powerfox v2
+- authentication: basic
+  username: !secret powerfox_username
+  password: !secret powerfox_password
+  scan_interval: 10
+  timeout: 30
+  resource: https://backend.powerfox.energy/api/2.0/my/main/current?unit=kwh
+  sensor:
+    # Current power reading in Watts
+    - name: PowerOpti_Power
+      unique_id: PowerOpti_Power
+      value_template: >
+        {{ value_json.Watt }}
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      icon: mdi:gauge
+    # Total engery delivered FROM grid
+    - name: PowerOpti_Energy_Plus
+      unique_id: PowerOpti_Energy_Plus
+      value_template: >
+        {{ value_json.A_Plus }}
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total
+      icon: mdi:transmission-tower-export
+    # Total energy delivered TO grid
+    - name: PowerOpti_Energy_Minus
+      unique_id: PowerOpti_Energy_Minus
+      value_template: >
+        {{ value_json.A_Minus }}
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total
+      icon: mdi:transmission-tower-import
+    # Indicates freshness of PowerOpti cloud data
+    - name: PowerOpti_Outdated
+      unique_id: PowerOpti_Outdated
+      value_template: >
+        {% if value_json.Outdated == False %}
+          OK
+        {% else %}
+          Outdated
+        {% endif %}
+      icon: >
+        {% if value_json.Outdated == False %}
+          mdi:check-circle-outline
+        {% else %}
+          mdi:alert-circle-outline
+        {% endif %}
+    # Timestamp of last data set in PowerOpti cloud
+    - name: PowerOpti_Timestamp
+      unique_id: PowerOpti_Timestamp
+      value_template: >
+        {{ value_json.Timestamp | as_datetime }}
+      device_class: timestamp
+      icon: mdi:clock-outline
+    # Computed sensors
+    # Current power delivered TO the grid
+    - name: PowerOpti_Power_Minus
+      unique_id: PowerOpti_Power_Minus
+      state_class: measurement
+      icon: mdi:transmission-tower-import
+      unit_of_measurement: W
+      device_class: power
+      value_template: >
+        {% if value_json.Watt < 0 %}
+            {{ (value_json.Watt | float(0)) * -1 | round (0,0,0) }}
+        {% else %}
+            0
+        {% endif %}
+
+    # Legacy sensor
+    # Lists all JSON data for PowerOpti
+    - name: PowerOpti
+      unique_id: PowerOpti
+      value_template: >
+        {% if (value_json.Outdated == False) -%}
+          OK
+        {%- else -%}
+          Outdated
+        {%- endif %}
+      json_attributes:
+        - Watt
+        - Timestamp
+        - A_Plus
+        - A_Minus
+        - Outdated
+      icon: mdi:file-document-outline
