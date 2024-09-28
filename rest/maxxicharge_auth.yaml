@@ -1,13 +1,13 @@
 # MaxxiCharge Bearer Token retrieval
 - method: POST
-  resource: https://maxxisun.app:3000/api/authentication/log-in
+  resource: "https://maxxisun.app:3000/api/authentication/log-in"
   verify_ssl: false
-  scan_interval: 1740 # 59 minutes
+  scan_interval: 1740 # 29 minutes
   timeout: 60
   headers:
-    Accept: application/json, text/plain, */*
-    User-Agent: Home Assistant
-    content-type: application/json
+    Accept: "application/json, text/plain, */*"
+    User-Agent: "Home Assistant"
+    content-type: "application/json"
   payload: !secret maxxicharge_login_payload
   sensor:
     - name: MaxxiCharge_Auth_JWT
@@ -20,21 +20,21 @@
       icon: mdi:barcode
       value_template: >
         {% set value_array = value_json.jwt.split('.') %}
-        {% set body = (value_array[1] + "===")  | base64_decode | from_json %}
+        {% set body = (value_array[1] + "===") | base64_decode | from_json %}
         {{ body.data.ccu }}
     - name: MaxxiCharge_Auth_Email
       unique_id: MaxxiCharge_Auth_Email
       icon: mdi:email-outline
       value_template: >
         {% set value_array = value_json.jwt.split('.') %}
-        {% set body = (value_array[1] + "===")  | base64_decode | from_json %}
+        {% set body = (value_array[1] + "===") | base64_decode | from_json %}
         {{ body.data.email }}
     - name: MaxxiCharge_Auth_ExpiresIn
       unique_id: MaxxiCharge_Auth_ExpiresIn
       icon: mdi:clock-alert-outline
       value_template: >
         {% set value_array = value_json.jwt.split('.') %}
-        {% set body = (value_array[1] + "===")  | base64_decode | from_json %}
+        {% set body = (value_array[1] + "===") | base64_decode | from_json %}
         {{ body.expiresIn }}
     - name: MaxxiCharge_Auth_IssuedAt
       unique_id: MaxxiCharge_Auth_IssuedAt
@@ -42,7 +42,7 @@
       device_class: timestamp
       value_template: >
         {% set value_array = value_json.jwt.split('.') %}
-        {% set body = (value_array[1] + "===")  | base64_decode | from_json %}
+        {% set body = (value_array[1] + "===") | base64_decode | from_json %}
         {{ body.iat | timestamp_local }}
     - name: MaxxiCharge_Auth_Response
       unique_id: MaxxiCharge_Auth_Response
