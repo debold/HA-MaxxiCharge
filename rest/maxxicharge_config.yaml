@@ -1,0 +1,326 @@
+# Maxxicharge v2 / config
+- method: GET
+  resource: https://maxxisun.app:3000/api/device/config
+  verify_ssl: false
+  headers:
+    Authorization: "Bearer {{ states('sensor.MaxxiCharge_Auth_JWT') }}"
+    Accept: application/json, text/plain, */*
+    User-Agent: Home Assistant
+  scan_interval: 10
+  timeout: 30
+  sensor:
+    # Name - does not change
+    - name: MaxxiChargeV2_Config_Name
+      unique_id: MaxxiChargeV2_Config_Name
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.name }}
+    
+    # baseLoad
+    - name: MaxxiChargeV2_Config_baseLoad
+      unique_id: MaxxiChargeV2_Config_baseLoad
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.baseLoad }}
+
+    # ccuMode
+    - name: MaxxiChargeV2_Config_ccuMode
+      unique_id: MaxxiChargeV2_Config_ccuMode
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.ccuMode }}
+
+    # ccuSpeed
+    - name: MaxxiChargeV2_Config_ccuSpeed
+      unique_id: MaxxiChargeV2_Config_ccuSpeed
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.ccuSpeed }}
+
+    # communicationTime
+    - name: MaxxiChargeV2_Config_communicationTime
+      unique_id: MaxxiChargeV2_Config_communicationTime
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.communicationTime }}
+
+    # dcAlgorithm
+    - name: MaxxiChargeV2_Config_dcAlgorithm
+      unique_id: MaxxiChargeV2_Config_dcAlgorithm
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.dcAlgorithm }}
+
+    # defaultDelay
+    - name: MaxxiChargeV2_Config_defaultDelay
+      unique_id: MaxxiChargeV2_Config_defaultDelay
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.defaultDelay }}
+
+    # definedCurrent
+    - name: MaxxiChargeV2_Config_definedCurrent
+      unique_id: MaxxiChargeV2_Config_definedCurrent
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.definedCurrent }}
+
+    # definedVoltage
+    - name: MaxxiChargeV2_Config_definedVoltage
+      unique_id: MaxxiChargeV2_Config_definedVoltage
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.definedVoltage }}
+
+    # deltaPower
+    - name: MaxxiChargeV2_Config_deltaPower
+      unique_id: MaxxiChargeV2_Config_deltaPower
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.deltaPower }}
+
+    # deviceId
+    - name: MaxxiChargeV2_Config_deviceId
+      unique_id: MaxxiChargeV2_Config_deviceId
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.deviceId }}
+
+    # dropPercentage
+    - name: MaxxiChargeV2_Config_dropPercentage
+      unique_id: MaxxiChargeV2_Config_dropPercentage
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.dropPercentage }}
+
+    # errorRestart
+    - name: MaxxiChargeV2_Config_errorRestart
+      unique_id: MaxxiChargeV2_Config_errorRestart
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.errorRestart }}
+
+    # firmwareVersion
+    - name: MaxxiChargeV2_Config_firmwareVersion
+      unique_id: MaxxiChargeV2_Config_firmwareVersion
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.firmwareVersion }}
+
+    # gapLimit
+    - name: MaxxiChargeV2_Config_gapLimit
+      unique_id: MaxxiChargeV2_Config_gapLimit
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.gapLimit }}
+
+    # invertFactor
+    - name: MaxxiChargeV2_Config_invertFactor
+      unique_id: MaxxiChargeV2_Config_invertFactor
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.invertFactor }}
+
+    # isDayTime
+    - name: MaxxiChargeV2_Config_isDayTime
+      unique_id: MaxxiChargeV2_Config_isDayTime
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.isDayTime }}
+
+    # maxOutputPower
+    - name: MaxxiChargeV2_Config_maxOutputPower
+      unique_id: MaxxiChargeV2_Config_maxOutputPower
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.maxOutputPower }}
+
+    # maxPowerCcu
+    - name: MaxxiChargeV2_Config_maxPowerCcu
+      unique_id: MaxxiChargeV2_Config_maxPowerCcu
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.maxPowerCcu }}
+
+    # maxSOC
+    - name: MaxxiChargeV2_Config_maxSOC
+      unique_id: MaxxiChargeV2_Config_maxSOC
+      device_class: battery
+      icon: mdi:battery
+      unit_of_measurement: "%"
+      value_template: >
+        {{ value_json.data.maxSOC }}
+
+    # meterIp
+    - name: MaxxiChargeV2_Config_meterIp
+      unique_id: MaxxiChargeV2_Config_meterIp
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.meterIp }}
+
+    # minPowerCcu
+    - name: MaxxiChargeV2_Config_minPowerCcu
+      unique_id: MaxxiChargeV2_Config_minPowerCcu
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.minPowerCcu }}
+
+    # minSOC
+    - name: MaxxiChargeV2_Config_minSOC
+      unique_id: MaxxiChargeV2_Config_minSOC
+      device_class: battery
+      icon: mdi:battery-outline
+      unit_of_measurement: "%"
+      value_template: >
+        {{ value_json.data.minSOC }}
+
+    # minSoc
+    - name: MaxxiChargeV2_Config_minSoc
+      unique_id: MaxxiChargeV2_Config_minSoc
+      device_class: battery
+      icon: mdi:battery-outline
+      unit_of_measurement: "%"
+      value_template: >
+        {{ value_json.data.minSoc }}
+
+    # noWifiTest
+    - name: MaxxiChargeV2_Config_noWifiTest
+      unique_id: MaxxiChargeV2_Config_noWifiTest
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.noWifiTest }}
+
+    # numberOfBatteries
+    - name: MaxxiChargeV2_Config_numberOfBatteries
+      unique_id: MaxxiChargeV2_Config_numberOfBatteries
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.numberOfBatteries }}
+
+    # numberOfConverters
+    - name: MaxxiChargeV2_Config_numberOfConverters
+      unique_id: MaxxiChargeV2_Config_numberOfConverters
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.numberOfConverters }}
+
+    # offlineOutput
+    - name: MaxxiChargeV2_Config_offlineOutput
+      unique_id: MaxxiChargeV2_Config_offlineOutput
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.offlineOutput }}
+
+    # offlinePower
+    - name: MaxxiChargeV2_Config_offlinePower
+      unique_id: MaxxiChargeV2_Config_offlinePower
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.offlinePower }}
+
+    # powerMeter
+    - name: MaxxiChargeV2_Config_powerMeter
+      unique_id: MaxxiChargeV2_Config_powerMeter
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.powerMeter }}
+
+    # powerNoWifi
+    - name: MaxxiChargeV2_Config_powerNoWifi
+      unique_id: MaxxiChargeV2_Config_powerNoWifi
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.powerNoWifi }}
+
+    # powerStrt2converters
+    - name: MaxxiChargeV2_Config_powerStrt2converters
+      unique_id: MaxxiChargeV2_Config_powerStrt2converters
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.powerStrt2converters }}
+
+    # poweroptiCN
+    - name: MaxxiChargeV2_Config_poweroptiCN
+      unique_id: MaxxiChargeV2_Config_poweroptiCN
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.poweroptiCN }}
+
+    # sampleTime
+    - name: MaxxiChargeV2_Config_sampleTime
+      unique_id: MaxxiChargeV2_Config_sampleTime
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.sampleTime }}
+
+    # serverIp
+    - name: MaxxiChargeV2_Config_serverIp
+      unique_id: MaxxiChargeV2_Config_serverIp
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.serverIp }}
+
+    # standby_power
+    - name: MaxxiChargeV2_Config_standby_power
+      unique_id: MaxxiChargeV2_Config_standby_power
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.standby_power }}
+
+    # threshold
+    - name: MaxxiChargeV2_Config_threshold
+      unique_id: MaxxiChargeV2_Config_threshold
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.threshold }}
+
+    # timeLoop
+    - name: MaxxiChargeV2_Config_timeLoop
+      unique_id: MaxxiChargeV2_Config_timeLoop
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.timeLoop }}
+
+    # updatedDate
+    - name: MaxxiChargeV2_Config_updatedDate
+      unique_id: MaxxiChargeV2_Config_updatedDate
+      icon: mdi:calendar
+      value_template: >
+        {{ (value_json.data.updatedDate / 1000) | timestamp_local }}
+#      value_template: >
+#        {{ value_json.data.updatedDate }}
+
+    # usrPower
+    - name: MaxxiChargeV2_Config_usrPower
+      unique_id: MaxxiChargeV2_Config_usrPower
+      device_class: power
+      icon: mdi:power-plug-battery-outline
+      unit_of_measurement: W
+      value_template: >
+        {{ value_json.data.usrPower }}
+
+    # calibration
+    - name: MaxxiChargeV2_Config_calibration
+      unique_id: MaxxiChargeV2_Config_calibration
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.calibration }}
+
+    # microinverterType
+    - name: MaxxiChargeV2_Config_microinverterType
+      unique_id: MaxxiChargeV2_Config_microinverterType
+      icon: mdi:information-outline
+      value_template: >
+        {{ value_json.data.microinverterType }}
