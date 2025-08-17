@@ -1,5 +1,12 @@
 # Home Assistant integration für MaxxiCharge (und PowerOpti)
 Mit den folgenden Anpassungen in deiner Home Assistant Umgebung kannst du deinen MaxxiCharge und (falls vorhanden) auch deinen PowerOpti einbinden.
+
+> [!IMPORTANT]
+> Update August 2025:
+> Die MaxxiCharge Online API hat sich geändert, deshalb funktionieren die alten Statusabfragen nicht mehr. Ich habe die REST
+> Abfragen in "maxxicharge_system.yaml" entsprechend angepasst. Neu dazugekommen ist die Datei "maxxicharge_config.yaml", in der die aktuelle Konfiguration
+> Eurer MaxxiCharge Installation abgefragt werden kann - dort ist nun auch die Firmware Version zu finden.
+
 Du brauchst nicht zwingend beide Integrationen, jede funktioniert auch für sich selbst.
 ## So könnte es dann aussehen
 ![Überblick](images/dash_ueberblick.png)
