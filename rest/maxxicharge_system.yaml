@@ -1,6 +1,6 @@
 # Maxxicharge v2
 - method: GET
-  resource: https://maxxisun.app:3000/api/last
+  resource: https://maxxisun.app:3000/api/device/last
   verify_ssl: false
   headers:
     Authorization: "Bearer {{ states('sensor.MaxxiCharge_Auth_JWT') }}"
@@ -24,7 +24,7 @@
         mdi:battery-{{ (value_json.SOC | int(0) / 10) | round(0, 0, 0) * 10 }}
       value_template: >
         {{ value_json.SOC }}
-      unit_of_measurement: '%'
+      unit_of_measurement: "%"
     # WIFI signal strength
     - name: MaxxiChargeV2_WifiStrength
       unique_id: MaxxiChargeV2_WifiStrength
@@ -61,12 +61,12 @@
       value_template: >
         {{ value_json.PV_power_total }}
       unit_of_measurement: W
-    # Firmware version of MaxxiCharge
-    - name: MaxxiChargeV2_FirmwareVersion
-      unique_id: MaxxiChargeV2_FirmwareVersion
-      icon: mdi:information-outline
-      value_template: >
-        {{ value_json.firmwareVersion }}
+    # Firmware version of MaxxiCharge / 2025-08 / Moved to config api
+    #- name: MaxxiChargeV2_FirmwareVersion
+    #  unique_id: MaxxiChargeV2_FirmwareVersion
+    #  icon: mdi:information-outline
+    #  value_template: >
+    #    {{ value_json.firmwareVersion }}
     # Time of last data recorded by MaxxiCharge cloud service
     # Can be used to detect connection issues
     - name: MaxxiChargeV2_LastUpdate
